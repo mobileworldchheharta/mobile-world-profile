@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="description" content="Mobile World — Rohit Saini, Owner. Call, WhatsApp, Instagram, Location aur Save Contact." />
+    <link rel="icon" href="data:," />
+    <title>Mobile World Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root{
+        --bg:#eef1f4;
+        --bg-accent:#e3eaf0;
+        --card:#ffffff;
+        --card-2:#f7f9fa;
+        --text:#0f2233;
+        --muted:#5c6d7d;
+        --muted-2:#8496a6;
+        --border:#dde5ea;
+        --brand:#0b4f6c;
+        --brand-deep:#073850;
+        --cta:#e85d04;
+        --cta-hover:#d45303;
+        --cta-text:#ffffff;
+        --green:#128c4b;
+        --green-bg:#e6f6ec;
+        --pink:#c13584;
+        --pink-bg:#fdf0f6;
+        --blue-bg:#e8f1f7;
+        --amber-bg:#fff4e0;
+        --amber:#9a6200;
+        --shadow:0 18px 44px rgba(11,45,68,.13), 0 2px 10px rgba(11,45,68,.07);
+        --radius:22px;
+      }
+      @media (prefers-color-scheme: dark){
+        :root{
+          --bg:#0c141b;
+          --bg-accent:#0f1d29;
+          --card:#14222e;
+          --card-2:#1a2c3b;
+          --text:#eef5f9;
+          --muted:#a7b8c4;
+          --muted-2:#7e95a6;
+          --border:#263b4b;
+          --brand:#5ec2e6;
+          --brand-deep:#0b4f6c;
+          --cta:#f97316;
+          --cta-hover:#ea580c;
+          --green:#3dd68c;
+          --green-bg:#123324;
+          --pink:#f27bb5;
+          --pink-bg:#331827;
+          --blue-bg:#163447;
+          --amber-bg:#33270f;
+          --amber:#fbbf24;
+          --shadow:0 18px 44px rgba(0,0,0,.45), 0 2px 10px rgba(0,0,0,.3);
+        }
+      }
+      *{box-sizing:border-box}
+      html{-webkit-text-size-adjust:100%}
+      body{
+        margin:0;
+        font-family:"Noto Sans", system-ui, -apple-system, Segoe UI, sans-serif;
+        background:
+          radial-gradient(720px 420px at 85% -80px, var(--bg-accent) 0%, transparent 62%),
+          var(--bg);
+        color:var(--text);
+        min-height:100dvh;
+      }
+      button, a{ -webkit-tap-highlight-color: transparent; }
+      button, [role="button"]{ min-height:48px; }
+      a{ min-height:48px; }
+
+      .page{
+        width:100%;
+        max-width:540px;
+        margin:0 auto;
+        padding:20px 16px 28px;
+      }
+      @media (min-width:640px){
+        .page{ padding:36px 20px 40px; }
+      }
+
+      .card{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:28px;
+        box-shadow:var(--shadow);
+        overflow:hidden;
+      }
+      .top-band{
+        height:6px;
+        background:var(--brand-deep);
+      }
+      @media (prefers-color-scheme: dark){
+        .top-band{ background:var(--cta); }
+      }
+      .profile{
+        padding:28px 22px 22px;
+        text-align:center;
+      }
+      .avatar{
+        width:92px; height:92px;
+        margin:0 auto 16px;
+        border-radius:26px;
+        background:var(--brand-deep);
+        color:#fff;
+        display:grid; place-items:center;
+        font-family:"Manrope", sans-serif;
+        font-weight:800;
+        font-size:34px;
+        letter-spacing:.02em;
+        box-shadow:0 10px 24px rgba(7,56,80,.28);
+        position:relative;
+      }
+      @media (prefers-color-scheme: dark){
+        .avatar{ background:var(--cta); box-shadow:0 10px 24px rgba(0,0,0,.4); }
+      }
+      .avatar::after{
+        content:"";
+        position:absolute; right:-4px; bottom:-4px;
+        width:22px; height:22px; border-radius:50%;
+        background:#22c55e; border:3.5px solid var(--card);
+      }
+      h1{
+        font-family:"Manrope", sans-serif;
+        font-size:34px; line-height:1.05; font-weight:800;
+        letter-spacing:-.02em;
+        margin:0;
+      }
+      .person{
+        margin:10px 0 0;
+        font-size:17px; font-weight:600; color:var(--text);
+        display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;
+      }
+      .person .role{
+        font-size:12.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+        color:var(--brand);
+        background:var(--blue-bg);
+        padding:5px 9px; border-radius:999px;
+      }
+      .tagline{
+        margin:10px auto 0;
+        max-width:36ch;
+        font-size:14.5px; line-height:1.55; color:var(--muted);
+      }
+      .phone-display{
+        display:inline-flex; align-items:center; gap:8px;
+        margin-top:16px;
+        min-height:44px;
+        padding:8px 14px;
+        border-radius:999px;
+        border:1px solid var(--border);
+        background:var(--card-2);
+        color:var(--text);
+        text-decoration:none;
+        font-family:"Manrope", sans-serif;
+        font-weight:800; font-size:17px; letter-spacing:.01em;
+      }
+      .phone-display svg{ flex:0 0 auto; color:var(--brand); }
+
+      .save-wrap{ padding:0 22px 22px; }
+      .save-btn{
+        width:100%;
+        border:0; cursor:pointer;
+        border-radius:16px;
+        background:var(--cta);
+        color:var(--cta-text);
+        padding:16px 18px;
+        display:flex; align-items:center; justify-content:center; gap:10px;
+        font-family:"Manrope", sans-serif;
+        font-size:17px; font-weight:800; letter-spacing:.01em;
+        box-shadow:0 10px 22px rgba(232,93,4,.28);
+        transition:transform .15s ease, background .15s ease;
+      }
+      .save-btn:hover{ background:var(--cta-hover); }
+      .save-btn:active{ transform:scale(.985); }
+      .save-btn:focus-visible, a:focus-visible{ outline:3px solid var(--brand); outline-offset:2px; }
+      .save-note{
+        text-align:center; margin:10px 4px 0;
+        font-size:13px; line-height:1.5; color:var(--muted);
+      }
+      .save-note strong{ color:var(--text); font-weight:600; }
+      .toast{
+        display:none;
+        margin-top:12px;
+        background:var(--green-bg); color:var(--green);
+        border:1px solid color-mix(in srgb, var(--green) 28%, transparent);
+        font-size:13.5px; font-weight:600; line-height:1.45;
+        padding:11px 13px; border-radius:12px; text-align:center;
+      }
+      .toast.show{ display:block; }
+
+      .divider{
+        display:flex; align-items:center; gap:12px;
+        padding:2px 22px 16px;
+        color:var(--muted-2);
+        font-size:11.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+        font-family:"Manrope", sans-serif;
+      }
+      .divider::before,.divider::after{ content:""; height:1px; background:var(--border); flex:1; }
+
+      .actions{
+        padding:0 16px 18px;
+        display:grid; gap:10px;
+      }
+      .action{
+        display:flex; align-items:center; gap:14px;
+        text-decoration:none; color:var(--text);
+        background:var(--card-2);
+        border:1px solid var(--border);
+        border-radius:18px;
+        padding:13px 14px;
+        min-height:72px;
+        transition:border-color .15s ease, transform .15s ease;
+      }
+      .action:active{ transform:scale(.99); }
+      .action:hover{ border-color:var(--muted-2); }
+      .icon{
+        width:48px; height:48px; flex:0 0 48px;
+        border-radius:14px; display:grid; place-items:center;
+      }
+      .icon.call{ background:var(--blue-bg); color:var(--brand); }
+      .icon.wa{ background:var(--green-bg); color:var(--green); }
+      .icon.ig{ background:var(--pink-bg); color:var(--pink); }
+      .icon.loc{ background:var(--amber-bg); color:var(--amber); }
+      .action-text{ flex:1; min-width:0; text-align:left; }
+      .action-title{
+        display:block;
+        font-family:"Manrope", sans-serif;
+        font-size:17px; font-weight:800; line-height:1.2;
+      }
+      .action-sub{
+        display:block; margin-top:3px;
+        font-size:13.5px; line-height:1.4; color:var(--muted);
+        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      }
+      .chev{ flex:0 0 auto; color:var(--muted-2); }
+
+      .details{
+        margin:0 16px 18px;
+        border:1px solid var(--border);
+        border-radius:18px;
+        overflow:hidden;
+      }
+      .detail-row{
+        display:flex; gap:14px; align-items:flex-start;
+        padding:16px;
+        background:var(--card);
+      }
+      .detail-row + .detail-row{ border-top:1px solid var(--border); }
+      .detail-row .icon{ width:42px; height:42px; flex-basis:42px; border-radius:12px; }
+      .detail-label{
+        font-size:11.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+        color:var(--muted-2); font-family:"Manrope", sans-serif; margin:1px 0 4px;
+      }
+      .detail-value{ font-size:15px; line-height:1.55; font-weight:600; }
+      .detail-value a{ color:var(--brand); text-decoration:none; min-height:auto; font-weight:700; }
+      .detail-value.normal{ font-weight:500; color:var(--text); }
+
+      .bottom-save{ padding:0 16px 20px; }
+      .bottom-save .save-btn{ box-shadow:none; }
+
+      footer{
+        text-align:center;
+        padding:18px 10px 4px;
+        color:var(--muted);
+        font-size:13px; line-height:1.6;
+      }
+      footer strong{ color:var(--text); font-family:"Manrope", sans-serif; }
+
+      @media (prefers-reduced-motion: reduce){
+        *{ transition:none !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <article class="card" aria-label="Mobile World profile">
+        <div class="top-band" aria-hidden="true"></div>
+
+        <section class="profile">
+          <div class="avatar" aria-hidden="true">MW</div>
+          <h1>Mobile World</h1>
+          <p class="person">Rohit Saini <span class="role">Owner</span></p>
+          <p class="tagline">Aapki mobile shop — Chheharta, Amritsar. Call karein, WhatsApp par message karein, ya seedha shop par aayein.</p>
+
+          <a class="phone-display" href="tel:+919592717735" aria-label="Call 9592717735">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +91 95927 17735
+          </a>
+        </section>
+
+        <div class="save-wrap">
+          <button type="button" class="save-btn" id="saveContactBtn">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+            Save Contact
+          </button>
+          <p class="save-note">Ek tap mein <strong>Rohit Saini — Mobile World</strong> aapke phone contacts mein save ho jayega.</p>
+          <div class="toast" id="toast" role="status" aria-live="polite">Contact download ho gaya hai — file kholte hi contact save ho jayega. Agar pehle se save hai, to purana wala delete karke dobara try karein.</div>
+        </div>
+
+        <div class="divider" aria-hidden="true">Connect karein</div>
+
+        <nav class="actions" aria-label="Contact options">
+          <a class="action" href="tel:+919592717735">
+            <span class="icon call">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <span class="action-text">
+              <span class="action-title">Call</span>
+              <span class="action-sub">95927 17735 par call karein</span>
+            </span>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+
+          <a class="action" href="https://wa.me/919592717735" target="_blank" rel="noopener">
+            <span class="icon wa">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            </span>
+            <span class="action-text">
+              <span class="action-title">WhatsApp</span>
+              <span class="action-sub">WhatsApp par chat shuru karein</span>
+            </span>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+
+          <a class="action" href="https://www.instagram.com/mobileworldchheharta/" target="_blank" rel="noopener">
+            <span class="icon ig">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </span>
+            <span class="action-text">
+              <span class="action-title">Instagram</span>
+              <span class="action-sub">@mobileworldchheharta</span>
+            </span>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+
+          <a class="action" href="https://maps.app.goo.gl/EuW7bQib6asVea2P6" target="_blank" rel="noopener">
+            <span class="icon loc">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <span class="action-text">
+              <span class="action-title">Location</span>
+              <span class="action-sub">Shop tak ka rasta dekhein</span>
+            </span>
+            <svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        </nav>
+
+        <section class="details" aria-label="Shop details">
+          <div class="detail-row">
+            <span class="icon loc">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            <div>
+              <p class="detail-label">Shop Address</p>
+              <p class="detail-value normal" style="margin:0">Pratap Bazaar, Chheharta, Amritsar, Punjab 143105</p>
+              <p style="margin:6px 0 0"><a href="https://maps.app.goo.gl/EuW7bQib6asVea2P6" target="_blank" rel="noopener">Google Maps par kholein →</a></p>
+            </div>
+          </div>
+          <div class="detail-row">
+            <span class="icon call">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a7 7 0 0 1 14 0v1"/></svg>
+            </span>
+            <div>
+              <p class="detail-label">Owner</p>
+              <p class="detail-value" style="margin:0">Rohit Saini — Mobile World</p>
+              <p class="detail-value normal" style="margin:4px 0 0">Call / WhatsApp: <a href="tel:+919592717735">+91 95927 17735</a></p>
+            </div>
+          </div>
+        </section>
+
+        <div class="bottom-save">
+          <button type="button" class="save-btn" id="saveContactBtn2">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+            Save Contact — Rohit Saini
+          </button>
+        </div>
+      </article>
+
+      <footer>
+        <strong>Mobile World</strong> • Pratap Bazaar, Chheharta, Amritsar<br />
+        Is page ko bookmark kar lein — number, WhatsApp, Instagram aur location hamesha yahi milega.
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        function buildVCard() {
+          var lines = [
+            'BEGIN:VCARD',
+            'VERSION:3.0',
+            'N:Saini;Rohit;;;',
+            'FN:Rohit Saini',
+            'ORG:Mobile World',
+            'TITLE:Owner',
+            'TEL;TYPE=CELL,VOICE:+919592717735',
+            'ADR;TYPE=WORK:;;Pratap Bazaar;Chheharta;Amritsar;Punjab;143105;India',
+            'URL:https://wa.me/919592717735',
+            'URL:https://www.instagram.com/mobileworldchheharta/',
+            'URL:https://maps.app.goo.gl/EuW7bQib6asVea2P6',
+            'X-SOCIALPROFILE;type=instagram:https://www.instagram.com/mobileworldchheharta/',
+            'END:VCARD'
+          ];
+          return lines.join('\r\n');
+        }
+
+        function saveContact() {
+          var vcard = buildVCard();
+          var blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement('a');
+          a.href = url;
+          a.download = 'Rohit-Saini-Mobile-World.vcf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+          var toast = document.getElementById('toast');
+          if (toast) {
+            toast.classList.add('show');
+            toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+
+        var b1 = document.getElementById('saveContactBtn');
+        var b2 = document.getElementById('saveContactBtn2');
+        if (b1) b1.addEventListener('click', saveContact);
+        if (b2) b2.addEventListener('click', saveContact);
+      })();
+    </script>
+  </body>
+</html>
