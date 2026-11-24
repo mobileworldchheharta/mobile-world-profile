@@ -4,22 +4,75 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mobile World Points</title>
-<meta name="description" content="Mobile World, Chheharta, Amritsar - apne points check karein">
+<meta name="description" content="Mobile World, Chheharta, Amritsar - apne loyalty points check karein">
 <style>
-html,body{margin:0;height:100%;background:#fff;font-family:system-ui,sans-serif}
-#f{position:fixed;inset:0;width:100%;height:100%;border:0}
-#fb{position:fixed;left:0;right:0;bottom:0;text-align:center;font-size:12px;padding:4px;background:rgba(255,255,255,.85)}
-#fb a{color:#555}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f3f5f9;color:#1b1f2a}
+.top{background:linear-gradient(135deg,#0b3d91,#1565c0);color:#fff;text-align:center;padding:26px 16px 22px}
+.top h1{margin:0;font-size:26px;letter-spacing:2px}
+.top .sub{opacity:.85;font-size:13px;margin-top:4px}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:14px}
+h2{font-size:17px;margin:0 0 10px}
+input{width:100%;font-size:20px;padding:12px;border:1.5px solid #c9d1e0;border-radius:10px;letter-spacing:1px}
+button{width:100%;margin-top:10px;font-size:17px;padding:13px;border:0;border-radius:10px;background:#1565c0;color:#fff;font-weight:600}
+button:disabled{opacity:.6}
+.err{color:#c62828;margin-top:10px;font-size:14px}
+.bal{font-size:40px;font-weight:800;color:#0b3d91;margin:4px 0}
+.muted{color:#667;font-size:13px}
+.row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #eef0f4;font-size:14px}
+.row:last-child{border-bottom:0}
+.plus{color:#2e7d32;font-weight:700}.minus{color:#c62828;font-weight:700}
+.wa{display:block;text-align:center;background:#25d366;color:#fff;text-decoration:none;padding:13px;border-radius:10px;font-weight:700;font-size:16px}
+ul{margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.7}
+.foot{text-align:center;font-size:12px;color:#889;padding:6px 0 20px}
+.foot a{color:#889}
 </style>
 </head>
 <body>
-<iframe id="f" title="Mobile World Points" allow="clipboard-write"></iframe>
-<div id="fb"><a id="dl" href="#" target="_blank" rel="noopener">Page na khule to yahan tap karein</a></div>
+<div class="top"><h1>MOBILE WORLD</h1><div class="sub">Pratap Bazaar, Chheharta, Amritsar</div></div>
+<div class="wrap">
+  <div class="card">
+    <h2>Apne Points check karein</h2>
+    <input id="m" type="tel" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">
+    <button id="b" onclick="chk()">Check karein</button>
+    <div id="e" class="err"></div>
+  </div>
+  <div id="r"></div>
+  <div class="card">
+    <h2>Points kaise milte hain</h2>
+    <ul>
+      <li>&#8377;5,000 se upar ke bill par har &#8377;100 = 1 Point</li>
+      <li>1 Point = &#8377;1 ki chhoot (&#8377;5,000+ bill par)</li>
+      <li>Pehli shopping par 50 Welcome Points</li>
+      <li>Dost ko laao: dono ko 100 Points</li>
+      <li>Birthday par 100 Points har saal</li>
+      <li>300 Points = Tempered Glass, 500 Points = Mobile Cover</li>
+      <li>Points kabhi expire nahi hote</li>
+    </ul>
+  </div>
+  <a class="wa" href="https://wa.me/919592717735?text=Hi%20Mobile%20World" target="_blank" rel="noopener">WhatsApp par baat karein</a>
+  <div class="foot" style="margin-top:14px">Mobile World, Shop No. 1, Main Pratap Bazaar, Chheharta, Amritsar 143105<br><a href="tel:+919592717735">95927 17735</a></div>
+</div>
 <script>
-var APP="https://script.google.com/macros/s/AKfycbxwfPT7WiyDj0T3P_0Jd9qI6zeGF72nkpn6s2ZgKQbItuNMgUQj2M9tP9dNreaeEERmyg/exec";
-var u=APP+(location.search||"");
-document.getElementById("f").src=u;
-document.getElementById("dl").href=u;
+var API="https://script.google.com/macros/s/AKfycbxwfPT7WiyDj0T3P_0Jd9qI6zeGF72nkpn6s2ZgKQbItuNMgUQj2M9tP9dNreaeEERmyg/exec";
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function inr(n){return "\u20b9"+Number(n||0).toLocaleString("en-IN")}
+document.getElementById("m").addEventListener("keydown",function(ev){if(ev.key==="Enter")chk()});
+function chk(){
+  var m=document.getElementById("m").value.replace(/\D/g,""),e=document.getElementById("e"),r=document.getElementById("r"),b=document.getElementById("b");
+  e.textContent="";r.innerHTML="";
+  if(m.length!==10){e.textContent="10-digit mobile number dalein";return}
+  b.disabled=true;b.textContent="Check ho raha hai...";
+  fetch(API+"?mobile="+m,{credentials:"omit",redirect:"follow"}).then(function(x){return x.json()}).then(function(d){
+    if(!d.ok){e.textContent=d.error||"Kuch galat hua";return}
+    if(!d.found){r.innerHTML='<div class="card"><h2>Number nahi mila</h2><div class="muted">Is number par abhi koi points nahi hain. &#8377;5,000 se upar ki shopping par points shuru ho jayenge!</div></div>';return}
+    var h="";(d.history||[]).forEach(function(t){var p=Number(t.points||0);h+='<div class="row"><span>'+esc(t.date)+'<br><span class="muted">'+esc(t.type)+(t.bill?' &middot; Bill '+inr(t.bill):'')+'</span></span><span class="'+(p<0?'minus':'plus')+'">'+(p>0?'+':'')+p+'</span></div>'});
+    r.innerHTML='<div class="card"><div class="muted">Namaste '+esc(d.name)+'!</div><div class="bal">'+Number(d.balance||0)+' Points</div><div class="muted">= '+inr(d.balance)+' ki chhoot</div>'
+      +'<div style="margin-top:12px"><div class="row"><span>Kul mile</span><b>'+Number(d.earned||0)+'</b></div><div class="row"><span>Use kiye</span><b>'+Number(d.redeemed||0)+'</b></div><div class="row"><span>Aakhri visit</span><b>'+esc(d.lastVisit||"-")+'</b></div></div></div>'
+      +(h?'<div class="card"><h2>History</h2>'+h+'</div>':'');
+  }).catch(function(){e.textContent="Network problem, dobara try karein"}).finally(function(){b.disabled=false;b.textContent="Check karein"});
+}
 </script>
 </body>
 </html>
