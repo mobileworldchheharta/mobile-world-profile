@@ -76,8 +76,9 @@ function O(req,cb){req.pin=PIN;run("owner",req,cb)}
 run("config",undefined,function(c){CF=c;if(START==="join")$("earn").scrollIntoView();$("wl").textContent=c.welcome;$("rf").textContent=c.referral;
  if(c.fest)$("festb").innerHTML='<div class="ok"><b>🎉 Festival offer: abhi DOUBLE points!</b></div>'});
 $("logo").onclick=function(){taps++;clearTimeout(tt);tt=setTimeout(function(){taps=0},2000);if(taps>=5){taps=0;openLock()}};
+function escH(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function histHtml(h){if(!h.length)return '<div class="muted">Abhi koi entry nahi</div>';return h.map(function(x){
- return '<div class="tx"><div>'+x.type+(x.note?' · '+x.note:'')+'<div class="muted">'+x.date+(x.bill?' · Bill '+rs(x.bill):'')+'</div></div><div class="'+(x.points>=0?'plus':'minus')+'">'+(x.points>=0?'+':'')+x.points+'</div></div>'}).join("")}
+ return '<div class="tx"><div>'+x.type+(x.note?' · '+escH(x.note):'')+'<div class="muted">'+x.date+(x.bill?' · Bill '+rs(x.bill):'')+'</div></div><div class="'+(x.points>=0?'plus':'minus')+'">'+(x.points>=0?'+':'')+x.points+'</div></div>'}).join("")}
 function pubCheck(){var m=$("pm").value.trim();$("pout").innerHTML='<div class="muted">Dekh rahe hain...</div>';
  run("publicCheck",m,function(r){if(!r.ok){$("pout").innerHTML='<div class="err">'+r.error+'</div>';return}
   if(!r.found){$("pout").innerHTML='<div class="muted">Is number par abhi koi points nahi hain. ₹5,000 se upar ki shopping par points shuru ho jayenge!</div>';return}
@@ -100,7 +101,7 @@ function wa(mob,msg){return '<a href="https://wa.me/91'+mob+'?text='+encodeURICo
 var SIGN="\n— Mobile World, Chheharta, Amritsar | 9592717735";
 var P={
 Check:function(){$("pane").innerHTML='<b>Customer check</b>'+inp("m","Mobile number","tel")+'<button onclick="doCheck()">Check</button><div id="res"></div>'},
-Add:function(){$("pane").innerHTML='<b>Points add karo</b>'+(CF.fest?'<div class="ok">Festival 2x ON</div>':'')+inp("m","Mobile number","tel")+inp("n","Naam (naye customer ke liye)")+inp("b","Bill amount ₹","number")+
+Add:function(){$("pane").innerHTML='<b>Points add karo</b>'+(CF.fest?'<div class="ok">Festival 2x ON</div>':'')+inp("m","Mobile number","tel")+inp("n","Naam (naye customer ke liye)")+inp("b","Bill amount ₹","number")+inp("pr","Product (jaise Vivo Y29, cover)")+
  '<label>Naya customer ho to (optional):</label>'+inp("bd","Birthday DD-MM (jaise 06-03)")+inp("rf","Refer karne wale ka number","tel")+'<button onclick="doAdd()">Save</button><div id="res"></div>'},
 Redeem:function(){$("pane").innerHTML='<b>Points redeem (₹5,000+ bill)</b>'+inp("m","Mobile number","tel")+'<button class="sec" onclick="peek()">Balance dekho</button><div id="pk"></div>'+inp("b","Bill amount ₹","number")+inp("p","Kitne points use karne hain","number")+'<button onclick="doRedeem()">Redeem</button><div id="res"></div>'},
 Family:function(){$("pane").innerHTML='<b>Family points (max 3 numbers)</b><div class="muted">Family ke sabhi numbers ka balance ek saath judta hai. Kisi bhi number se earn aur redeem ho sakta hai.</div>'+inp("m","Family ka koi bhi number (pehle se customer)","tel")+inp("fm","Jodne wala number","tel")+inp("fn","Naam (agar ye number naya hai)")+'<button onclick="doFamLink()">Family me jodo</button><hr style="border-color:#2a2348"><b>Family se hatao</b>'+inp("um","Hatane wala number","tel")+'<button class="sec" onclick="doFamUnlink()">Hatao</button><div id="res"></div>'},
@@ -122,7 +123,7 @@ function doCheck(){out("...");O({action:"check",mobile:v("m")},function(r){if(!r
  var fh=r.family?'<div class="ok">Family ('+r.family.members.length+'): '+r.family.members.map(function(x){return x.name+' '+x.mobile+' = '+x.balance}).join(' · ')+'<br>Shared balance: '+r.family.balance+' · Iska apna: '+r.balance+'</div>':'';
  out('<p><b>'+r.name+'</b></p><div class="big">'+(r.family?r.family.balance:r.balance)+'</div>'+fh+'<p class="muted">Kul shopping '+rs(r.spend)+' · Mile '+r.earned+' · Use '+r.redeemed+'<br>Last visit: '+r.lastVisit+' · Birthday: '+(r.birthday||'-')+' · Review: '+(r.reviewDone?'✔':'✘')+(r.referredBy?' · Referred by '+r.referredBy:'')+' · Steps: '+(r.steps||'-')+'</p>'+histHtml(r.history))})}
 function peek(){O({action:"check",mobile:v("m")},function(r){$("pk").innerHTML=!r.ok?'<div class="err">'+r.error+'</div>':(!r.found?'<div class="err">Customer nahi mila</div>':'<div class="ok">'+r.name+': '+(r.family?r.family.balance+' points (family)':r.balance+' points')+'</div>')})}
-function doAdd(){out("...");O({action:"add",mobile:v("m"),name:v("n"),bill:v("b"),birthday:v("bd"),referrer:v("rf")},function(r){if(!r.ok)return err(r);
+function doAdd(){out("...");O({action:"add",mobile:v("m"),name:v("n"),bill:v("b"),birthday:v("bd"),referrer:v("rf"),product:v("pr")},function(r){if(!r.ok)return err(r);
  var tot=r.events.reduce(function(a,e){return a+e.points},0);
  var msg="Mobile World: aapko is bill pe "+tot+" points mile, total balance "+r.balance+" points. Dhanyavaad!";
  var h='<div class="ok">✔ '+r.name+' ko is bill pe '+tot+' points mile (bill '+r.pointsAdded+(r.isNew?' + welcome '+CF.welcome:'')+(r.referrer?' + referral '+r.referrer.points:'')+'). Balance: '+r.balance+(r.family?' (family)':'')+'</div><div class="muted">Customer ko WhatsApp bhejne ke liye button dabao, phir WhatsApp me Send dabao.</div>'+wa(r.mobile,msg);
