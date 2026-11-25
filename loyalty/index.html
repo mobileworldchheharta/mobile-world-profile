@@ -5,7 +5,7 @@
 h1{margin:6px 0 2px;font-size:28px;letter-spacing:3px;text-align:center;background:linear-gradient(90deg,#ff5fa2,#a66bff);-webkit-background-clip:text;color:transparent;user-select:none;cursor:pointer}
 .sub{text-align:center;color:#b9b0d9;font-size:13px;margin-bottom:16px}
 .card{background:#1b1631;border:1px solid #2e2650;border-radius:16px;padding:16px;margin:12px 0}
-input,select{width:100%;padding:13px;border-radius:10px;border:1px solid #3b3166;background:#120f24;color:#fff;font-size:16px;margin:6px 0}
+input,select,textarea{width:100%;padding:13px;border-radius:10px;border:1px solid #3b3166;background:#120f24;color:#fff;font-size:16px;margin:6px 0}textarea{font-family:inherit;resize:vertical}
 button{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(90deg,#ff5fa2,#a66bff);color:#fff;font-size:16px;font-weight:600;margin:6px 0;cursor:pointer}
 button.sec{background:#2a2348}button.wa{background:#25d366}
 .big{font-size:40px;font-weight:800;text-align:center}.muted{color:#b9b0d9;font-size:13px}
@@ -68,7 +68,7 @@ function doLogin(){var p=$("pin").value.trim();
  if(!pinSet){run("owner",{action:"setpin",newPin:p},function(r){if(!r.ok){$("lerr").innerHTML='<div class="err">'+r.error+'</div>';return}pinSet=true;doLogin()});return}
  run("owner",{action:"login",pin:p},function(r){if(!r.ok){$("lerr").innerHTML='<div class="err">'+r.error+'</div>';return}PIN=p;ROLE=r.role||"owner";CF.staffSet=!!r.staffSet;$("pin").value="";CF.fest=r.fest;$("lock").className="hide";$("own").className="";tab("Check")})}
 function logout(){PIN="";ROLE="";showPub()}
-var TABS=["Check","Add","Redeem","Family","Bonus","Birthday","Wapas Bulao","Points use karo","Upgrade","Report","Settings"];
+var TABS=["Check","Add","Redeem","Family","Bonus","Birthday","Wapas Bulao","Points use karo","Upgrade","Sab ko message","Report","Settings"];
 var STAFF_TABS=["Check","Add"];
 function tab(n){var L=ROLE==="owner"?TABS:STAFF_TABS;if(L.indexOf(n)<0)n="Check";$("tabs").innerHTML=L.map(function(t){return '<button class="'+(t===n?'on':'')+'" onclick="tab(\''+t+'\')">'+t+'</button>'}).join("");P[n]()}
 function inp(id,ph,t){return '<input id="'+id+'" type="'+(t||'text')+'" placeholder="'+ph+'"'+(t==='tel'?' maxlength="10"':'')+'>'}
@@ -97,6 +97,7 @@ Birthday:function(){$("pane").innerHTML='<b>Birthday: aaj + agle 7 din</b><div c
 Upgrade:function(){$("pane").innerHTML='<b>Phone upgrade reminder</b><div class="muted">Jinka aakhri ₹5,000+ bill (phone purchase) 12 se 18 mahine pehle tha</div><div id="res">Loading...</div>';O({action:"upgrade"},function(r){if(!r.ok)return err(r);if(!r.list.length)return out('<div class="muted">Abhi koi nahi</div>');
  out(r.list.map(function(c){var msg="Namaste "+c.name.split(" ")[0]+" ji 🙏 Aapne "+c.date+" ko Mobile World se "+rs(c.bill)+" ka phone liya tha, ab 1 saal se zyada ho gaya! 📱 Naye phone par best EXCHANGE OFFER paaiye. Aapke "+c.balance+" Points (₹"+c.balance+") bhi naye phone par use ho jayenge. Dukaan par zaroor aaiye!"+SIGN;
   return '<div class="card"><b>'+c.name+'</b> · '+c.mobile+'<br><span class="muted">Phone purchase: '+rs(c.bill)+' · '+c.date+' ('+c.months+' mahine pehle) · '+c.balance+' pts</span>'+wa(c.mobile,msg)+'</div>'}).join(""))})},
+"Sab ko message":function(){$("pane").innerHTML='<b>Sab ko message (tyohar / offer)</b><div class="muted">Ek message likho. <b>{naam}</b> ki jagah customer ka naam aur <b>{points}</b> ki jagah uske points apne aap aa jayenge. Har row ka button dabao, phir WhatsApp me Send khud dabao. Family ek hi baar dikhegi.</div><textarea id="bm" rows="5" oninput="bcDraw()"></textarea><div class="ok" id="bc"></div><div id="res">Loading...</div>';$("bm").value=BC_DEF;O({action:"broadcast"},function(r){if(!r.ok)return err(r);BC=r.list;bcDraw()})},
 Report:function(){$("pane").innerHTML='<b>Mahine ki report</b><input id="mo" type="month"><button onclick="doReport()">Dekho</button><div id="res"></div>';doReport()},
 Settings:function(){$("pane").innerHTML='<b>Festival double points</b><div class="muted">Abhi: '+(CF.fest?'ON':'OFF')+'</div><button onclick="setFest('+(!CF.fest)+')">'+(CF.fest?'Band karo':'Chalu karo')+'</button>'+'<hr style="border-color:#2a2348"><b>Staff PIN</b><div class="muted">Staff sirf bill add aur check kar sakta hai. Abhi: '+(CF.staffSet?'set hai':'nahi hai')+'</div>'+inp("sp","Staff ka 4-digit PIN (owner PIN se alag)","password")+'<button class="sec" onclick="setStaff()">Staff PIN save karo</button>'+(CF.staffSet?'<button class="sec" onclick="staffOff()">Staff PIN hatao</button>':'')+'<hr style="border-color:#2a2348"><b>PIN badlo</b>'+inp("np","Naya 4-digit PIN","password")+'<button class="sec" onclick="chPin()">Save</button><div id="res"></div>'}
 };
@@ -126,6 +127,12 @@ function doSetBd(){O({action:"setbirthday",mobile:v("m"),birthday:v("bd")},funct
 function doReport(){out("...");O({action:"report",month:v("mo")},function(r){if(!r.ok)return err(r);var bt=Object.keys(r.byType).map(function(k){return k+": "+r.byType[k]}).join(" · ");
  out('<p><b>'+r.month+'</b></p><p>Points diye: <b>'+r.pointsGiven+'</b> · Use hue: <b>'+r.pointsUsed+'</b><br>Points wale bills: '+r.bills+' ('+rs(r.sales)+')<br>Naye customer: '+r.newCustomers+' · Kul customer: '+r.totalCustomers+'<br>Sabke paas bache points: '+r.outstanding+' (₹'+r.outstanding+')</p><div class="muted">'+bt+'</div><p><b>Top 10 customers</b></p>'+
  (r.top.length?r.top.map(function(c,i){return '<div class="tx"><div>'+(i+1)+'. '+c.name+'</div><div>'+rs(c.spend)+'</div></div>'}).join(""):'<div class="muted">-</div>'))})}
+var BC=[],BC_SENT={},BC_DEF="Namaste {naam} ji! Mobile World ki taraf se tyohar ki shubhkamnayein. Aapke paas {points} points hain, shop aakar use karein. 9592717735";
+function bcMsg(t,c){return String(t).replace(/\{naam\}/gi,function(){return c.name}).replace(/\{points\}/gi,function(){return String(c.balance)})}
+function bcCount(){var n=BC.filter(function(c){return BC_SENT[c.mobile]}).length;$("bc").innerHTML='Kul '+BC.length+' customer · Bheje: '+n}
+function bcSent(m){BC_SENT[m]=1;var e=$("bs"+m);if(e)e.innerHTML=' · <span class="ok">bheja ✔</span>';bcCount()}
+function bcDraw(){var e=$("bm"),t=e?e.value:BC_DEF;bcCount();if(!BC.length)return out('<div class="muted">Abhi koi customer nahi</div>');
+ out(BC.map(function(c){var m=escH(c.mobile);return '<div class="tx"><div><b>'+escH(c.fullName||c.name)+'</b>'+(c.family?' <span class="muted">· Family</span>':'')+'<div class="muted">'+m+' · '+c.balance+' pts<span id="bs'+m+'">'+(BC_SENT[c.mobile]?' · <span class="ok">bheja ✔</span>':'')+'</span></div></div><a href="https://wa.me/91'+m+'?text='+encodeURIComponent(bcMsg(t,c))+'" target="_blank" rel="noopener" onclick="bcSent(\''+m+'\')" style="flex:0 0 auto"><button class="wa" style="width:auto;padding:9px 14px">WhatsApp</button></a></div>'}).join(""))}
 function setFest(on){O({action:"fest",on:on},function(r){if(!r.ok)return err(r);CF.fest=r.fest;P.Settings()})}
 function setStaff(){O({action:"setstaffpin",newPin:v("sp")},function(r){if(!r.ok)return err(r);CF.staffSet=true;P.Settings();out('<div class="ok">✔ Staff PIN save ho gaya</div>')})}
 function staffOff(){O({action:"staffpinoff"},function(r){if(!r.ok)return err(r);CF.staffSet=false;P.Settings();out('<div class="ok">✔ Staff PIN hata diya</div>')})}
