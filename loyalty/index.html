@@ -59,7 +59,9 @@ function histHtml(h){if(!h.length)return '<div class="muted">Abhi koi entry nahi
 function pubCheck(){var m=$("pm").value.trim();$("pout").innerHTML='<div class="muted">Dekh rahe hain...</div>';
  run("publicCheck",m,function(r){if(!r.ok){$("pout").innerHTML='<div class="err">'+r.error+'</div>';return}
   if(!r.found){$("pout").innerHTML='<div class="muted">Is number par abhi koi points nahi hain. ₹5,000 se upar ki shopping par points shuru ho jayenge!</div>';return}
-  $("pout").innerHTML='<p>Namaste '+r.name+' 🙏</p><div class="big">'+r.balance+'</div><div class="muted" style="text-align:center">Points balance = '+rs(r.balance)+'</div>'})}
+  $("pout").innerHTML='<p>Namaste '+r.name+' 🙏</p><div class="big">'+r.balance+'</div><div class="muted" style="text-align:center">Points balance = '+rs(r.balance)+'</div>'+ldPub(r)})}
+function ldPub(r){var w=r.lastWinner,h='';if(r.myEntries>0)h+='<div class="ok" style="text-align:center">🍀 Is mahine aapki '+escH(r.myEntries)+' entry</div>';
+ if(w)h+='<div class="muted" style="text-align:center">🎉 '+escH(w.month)+' ke Lucky Winner: '+escH(w.firstName)+' ji, Entry #'+escH(w.entryNo)+', mobile ••••'+escH(w.last4)+'</div>';return h}
 function showPub(){$("pub").className="";$("lock").className="hide";$("own").className="hide"}
 var pinSet=true;
 function openLock(){$("pub").className="hide";$("own").className="hide";$("lock").className="";$("lerr").innerHTML="";
@@ -68,7 +70,7 @@ function doLogin(){var p=$("pin").value.trim();
  if(!pinSet){run("owner",{action:"setpin",newPin:p},function(r){if(!r.ok){$("lerr").innerHTML='<div class="err">'+r.error+'</div>';return}pinSet=true;doLogin()});return}
  run("owner",{action:"login",pin:p},function(r){if(!r.ok){$("lerr").innerHTML='<div class="err">'+r.error+'</div>';return}PIN=p;ROLE=r.role||"owner";CF.staffSet=!!r.staffSet;$("pin").value="";CF.fest=r.fest;$("lock").className="hide";$("own").className="";tab("Check")})}
 function logout(){PIN="";ROLE="";showPub()}
-var TABS=["Check","Add","Redeem","Family","Bonus","Birthday","Wapas Bulao","Points use karo","Upgrade","Sab ko message","Report","Settings"];
+var TABS=["Check","Add","Redeem","Family","Bonus","Birthday","Wapas Bulao","Points use karo","Upgrade","Sab ko message","Lucky Draw","Report","Settings"];
 var STAFF_TABS=["Check","Add"];
 function tab(n){var L=ROLE==="owner"?TABS:STAFF_TABS;if(L.indexOf(n)<0)n="Check";$("tabs").innerHTML=L.map(function(t){return '<button class="'+(t===n?'on':'')+'" onclick="tab(\''+t+'\')">'+t+'</button>'}).join("");P[n]()}
 function inp(id,ph,t){return '<input id="'+id+'" type="'+(t||'text')+'" placeholder="'+ph+'"'+(t==='tel'?' maxlength="10"':'')+'>'}
@@ -98,6 +100,7 @@ Upgrade:function(){$("pane").innerHTML='<b>Phone upgrade reminder</b><div class=
  out(r.list.map(function(c){var msg="Namaste "+c.name.split(" ")[0]+" ji 🙏 Aapne "+c.date+" ko Mobile World se "+rs(c.bill)+" ka phone liya tha, ab 1 saal se zyada ho gaya! 📱 Naye phone par best EXCHANGE OFFER paaiye. Aapke "+c.balance+" Points (₹"+c.balance+") bhi naye phone par use ho jayenge. Dukaan par zaroor aaiye!"+SIGN;
   return '<div class="card"><b>'+c.name+'</b> · '+c.mobile+'<br><span class="muted">Phone purchase: '+rs(c.bill)+' · '+c.date+' ('+c.months+' mahine pehle) · '+c.balance+' pts</span>'+wa(c.mobile,msg)+'</div>'}).join(""))})},
 "Sab ko message":function(){$("pane").innerHTML='<b>Sab ko message (tyohar / offer)</b><div class="muted">Ek message likho. <b>{naam}</b> ki jagah customer ka naam aur <b>{points}</b> ki jagah uske points apne aap aa jayenge. Har row ka button dabao, phir WhatsApp me Send khud dabao. Family ek hi baar dikhegi.</div><div class="muted" style="margin-top:8px">Template chuno (phir edit kar sakte ho):</div><div class="chips" id="bt"></div><div id="bnp"></div><textarea id="bm" rows="7" oninput="bcDraw()"></textarea><div class="muted">Kisko bhejna hai:</div><div class="chips" id="bf"></div><div class="ok" id="bc"></div><div id="res">Loading...</div>';$("bm").value=BC_DEF;BC_T=0;bcChips();O({action:"broadcast"},function(r){if(!r.ok)return err(r);BC=r.list;bcDraw()})},
+"Lucky Draw":function(){$("pane").innerHTML='<b>🍀 Monthly Lucky Draw</b><div class="muted">₹5,000 se upar ka har bill = 1 entry. Draw sirf khatam hue mahine ka. Winner ko '+LD_PRIZE+' bonus points.</div><input id="lm" type="month" value="'+ldPrev()+'" onchange="ldLoad()"><div id="res">Loading...</div>';ldLoad()},
 Report:function(){$("pane").innerHTML='<b>Mahine ki report</b><input id="mo" type="month"><button onclick="doReport()">Dekho</button><div id="res"></div>';doReport()},
 Settings:function(){$("pane").innerHTML='<b>Festival double points</b><div class="muted">Abhi: '+(CF.fest?'ON':'OFF')+'</div><button onclick="setFest('+(!CF.fest)+')">'+(CF.fest?'Band karo':'Chalu karo')+'</button>'+'<hr style="border-color:#2a2348"><b>Staff PIN</b><div class="muted">Staff sirf bill add aur check kar sakta hai. Abhi: '+(CF.staffSet?'set hai':'nahi hai')+'</div>'+inp("sp","Staff ka 4-digit PIN (owner PIN se alag)","password")+'<button class="sec" onclick="setStaff()">Staff PIN save karo</button>'+(CF.staffSet?'<button class="sec" onclick="staffOff()">Staff PIN hatao</button>':'')+'<hr style="border-color:#2a2348"><b>PIN badlo</b>'+inp("np","Naya 4-digit PIN","password")+'<button class="sec" onclick="chPin()">Save</button><div id="res"></div>'}
 };
@@ -107,8 +110,8 @@ function doCheck(){out("...");O({action:"check",mobile:v("m")},function(r){if(!r
 function peek(){O({action:"check",mobile:v("m")},function(r){$("pk").innerHTML=!r.ok?'<div class="err">'+r.error+'</div>':(!r.found?'<div class="err">Customer nahi mila</div>':'<div class="ok">'+r.name+': '+(r.family?r.family.balance+' points (family)':r.balance+' points')+'</div>')})}
 function doAdd(){out("...");O({action:"add",mobile:v("m"),name:v("n"),bill:v("b"),birthday:v("bd"),referrer:v("rf"),product:v("pr")},function(r){if(!r.ok)return err(r);
  var tot=r.events.reduce(function(a,e){return a+e.points},0);
- var msg="Mobile World: aapko is bill pe "+tot+" points mile, total balance "+r.balance+" points. Dhanyavaad!";
- var h='<div class="ok">✔ '+r.name+' ko is bill pe '+tot+' points mile (bill '+r.pointsAdded+(r.isNew?' + welcome '+CF.welcome:'')+(r.referrer?' + referral '+r.referrer.points:'')+'). Balance: '+r.balance+(r.family?' (family)':'')+'</div><div class="muted">Customer ko WhatsApp bhejne ke liye button dabao, phir WhatsApp me Send dabao.</div>'+wa(r.mobile,msg);
+ var msg="Mobile World: aapko is bill pe "+tot+" points mile, total balance "+r.balance+" points. Dhanyavaad!"+(r.entryNo?"\nAap is mahine ke Lucky Draw mein shamil hain, Entry #"+r.entryNo+" 🍀":"");
+ var h='<div class="ok">✔ '+r.name+' ko is bill pe '+tot+' points mile (bill '+r.pointsAdded+(r.isNew?' + welcome '+CF.welcome:'')+(r.referrer?' + referral '+r.referrer.points:'')+'). Balance: '+r.balance+(r.family?' (family)':'')+(r.entryNo?'<br>🍀 Lucky Draw Entry #'+r.entryNo+' ('+escH(r.entryMonthLabel)+')':'')+'</div><div class="muted">Customer ko WhatsApp bhejne ke liye button dabao, phir WhatsApp me Send dabao.</div>'+wa(r.mobile,msg);
  if(r.referrer){var m2="Namaste "+r.referrer.name.split(" ")[0]+" ji 🙏 Aapke refer kiye "+r.referrer.friend+" ne Mobile World se shopping ki. Shukriya! Aapko "+r.referrer.points+" Referral Points mile. Aapka balance: "+r.referrer.balance+" Points (₹"+r.referrer.balance+")."+SIGN;
   h+='<div class="ok">Refer karne wale ('+r.referrer.name+') ko bhi '+r.referrer.points+' points</div>'+wa(r.referrer.mobile,m2)}
  out(h)})}
@@ -163,6 +166,26 @@ function bcLast(c){var d=bcDays(c.lastVisit);return ' · Last: '+(d<0?'kabhi nah
 function bcSent(m){BC_SENT[m]=1;var e=$("bs"+m);if(e)e.innerHTML=' · <span class="ok">bheja ✔</span>';bcCount()}
 function bcDraw(){var e=$("bm"),t=e?e.value:BC_DEF;bcCount();if(!BC.length)return out('<div class="muted">Abhi koi customer nahi</div>');var L=bcList();if(!L.length)return out('<div class="muted">Is filter me koi customer nahi</div>');
  out(L.map(function(c){var m=escH(c.mobile);return '<div class="tx"><div><b>'+escH(c.fullName||c.name)+'</b>'+(c.family?' <span class="muted">· Family</span>':'')+'<div class="muted">'+m+' · '+c.balance+' pts'+bcLast(c)+'<span id="bs'+m+'">'+(BC_SENT[c.mobile]?' · <span class="ok">bheja ✔</span>':'')+'</span></div></div><a href="https://wa.me/91'+m+'?text='+encodeURIComponent(bcMsg(t,c))+'" target="_blank" rel="noopener" onclick="bcSent(\''+m+'\')" style="flex:0 0 auto"><button class="wa" style="width:auto;padding:9px 14px">WhatsApp</button></a></div>'}).join(""))}
+var LD_PRIZE=500,LD_TXT="",LD_MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
+function ldPrev(){var d=new Date();d.setDate(1);d.setMonth(d.getMonth()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
+function ldWinMsg(w){return "Badhai ho "+w.firstName+" ji! 🎉 Aap Mobile World Lucky Draw ("+w.label+") ke winner hain, Entry #"+w.entryNo+". Aapke account mein "+w.prize+" bonus points jod diye gaye hain. Mobile World par aaj hi aakar redeem karein. WhatsApp/Call: 9592717735"}
+function ldCommMsg(w){return "🎉 Mobile World Lucky Draw – "+w.label+" ke Winner! 🎉\n\nBadhai ho "+w.firstName+" ji (mobile ••••"+w.last4+")!\nEntry #"+w.entryNo+" ne jeeta "+w.prize+" bonus points 🎁\n"+w.firstName+" ji, aap Mobile World par aaj hi jaakar apne points redeem kar sakte hain.\n\nIs mahine kul "+w.total+" entries thi. Sabka dhanyavaad!\n\nAgla draw 1 tareekh ko. ₹5,000 se upar ki har kharidari pe ek free entry.\nJitni zyada kharidari, utne zyada chance! 🍀\n\nWhatsApp/Call: 9592717735\nMobile World, Chheharta"}
+function ldWinHtml(w){LD_TXT=ldCommMsg(w);var m=escH(w.mobile);return '<div class="card"><b>🏆 '+escH(w.label)+' ke Winner: '+escH(w.name)+'</b><div class="muted">Entry #'+escH(w.entryNo)+' · '+m+' · '+escH(w.prize)+' points diye · Kul '+escH(w.total)+' entries'+(w.date?' · '+escH(w.date):'')+'</div>'+
+ '<a href="https://wa.me/91'+m+'?text='+encodeURIComponent(ldWinMsg(w))+'" target="_blank" rel="noopener"><button class="wa">Winner ko WhatsApp</button></a>'+
+ '<a href="https://wa.me/?text='+encodeURIComponent(LD_TXT)+'" target="_blank" rel="noopener"><button class="wa">Community mein bhejo</button></a>'+
+ '<textarea id="ldt" rows="6" readonly>'+escH(LD_TXT)+'</textarea><button class="sec" onclick="ldCopy()">Copy</button><div id="ldc"></div></div>'}
+function ldCopy(){var e=$("ldt");try{if(navigator.clipboard){navigator.clipboard.writeText(LD_TXT)}else{e.select();document.execCommand("copy")}$("ldc").innerHTML='<div class="ok">✔ Copy ho gaya</div>'}catch(x){$("ldc").innerHTML='<div class="err">Copy nahi hua, text select karke copy karein</div>'}}
+function ldHist(h){if(!h||!h.length)return '';return '<p><b>Pichhle winners</b></p>'+h.map(function(x){return '<div class="tx"><div>'+escH(x.label)+' '+escH(String(x.month).slice(0,4))+' · <b>'+escH(x.name)+'</b><div class="muted">Entry #'+escH(x.entryNo)+' · ••••'+escH(x.last4)+' · '+escH(x.total)+' entries</div></div><div class="plus">+'+escH(x.prize)+'</div></div>'}).join("")}
+function ldList(r){if(!r.entries.length)return '<div class="muted">'+escH(r.label)+' me koi entry nahi</div>';return '<p><b>'+escH(r.label)+' ki entries: '+r.total+'</b></p>'+r.entries.map(function(x){return '<div class="tx"><div>#'+escH(x.entryNo)+' · '+escH(x.name)+' · ••••'+escH(x.last4)+'<div class="muted">'+escH(x.date)+'</div></div><div>'+rs(x.bill)+'</div></div>'}).join("")}
+function ldLoad(){out("...");O({action:"luckylist",month:v("lm")},function(r){if(!r.ok)return err(r);LD_PRIZE=r.prize||LD_PRIZE;var h='';
+ if(r.drawn)h+='<div class="ok">Is mahine ka draw ho chuka hai</div>'+ldWinHtml(r.drawn);
+ else if(!r.completed)h+='<div class="muted">Mahina khatam hone ke baad draw</div>';
+ else if(!r.total)h+='<div class="muted">Is mahine koi entry nahi</div>';
+ else h+='<button id="ldb" onclick="ldDraw()">Draw nikalo ('+escH(r.label)+', '+r.total+' entries)</button>';
+ out(h+ldList(r)+ldHist(r.history))})}
+function ldDraw(){var mo=v("lm");if(!confirm("Pakka "+mo+" ka Lucky Draw nikalein? Ye sirf ek baar hoga aur winner ko "+LD_PRIZE+" points jud jayenge."))return;var b=$("ldb");if(b)b.disabled=true;
+ O({action:"luckydraw",month:mo},function(r){if(!r.ok){out('<div class="err">'+escH(r.error)+'</div>'+(r.winner?ldWinHtml(r.winner):''));return}
+  out('<div class="ok">✔ Draw ho gaya! Winner ka balance: '+escH(r.balance)+' points</div>'+ldWinHtml(r.winner))})}
 function setFest(on){O({action:"fest",on:on},function(r){if(!r.ok)return err(r);CF.fest=r.fest;P.Settings()})}
 function setStaff(){O({action:"setstaffpin",newPin:v("sp")},function(r){if(!r.ok)return err(r);CF.staffSet=true;P.Settings();out('<div class="ok">✔ Staff PIN save ho gaya</div>')})}
 function staffOff(){O({action:"staffpinoff"},function(r){if(!r.ok)return err(r);CF.staffSet=false;P.Settings();out('<div class="ok">✔ Staff PIN hata diya</div>')})}
