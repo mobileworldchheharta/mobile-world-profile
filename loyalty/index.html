@@ -33,7 +33,7 @@ button.sec{background:#2a2348}button.wa{background:#25d366}
   
   <a id="b-review" href="https://search.google.com/local/writereview?placeid=ChIJWUe9wjRlGTkRNufJO95aopc" target="_blank" rel="noopener">⭐ Google Review dein</a></div>
  <div class="muted" id="rev-note" style="text-align:center">Review ke baad shop pe batayein, 50 points milenge</div>
- <div class="contact"><a href="tel:+919592717735">📞 Call</a> · <a href="https://wa.me/919592717735" target="_blank" rel="noopener">WhatsApp 9592717735</a></div>
+ <div class="contact"><a href="tel:+917347342219">📞 Call</a> · <a href="https://wa.me/917347342219" target="_blank" rel="noopener">WhatsApp 7347342219</a></div>
 </div>
 
 <div id="lock" class="hide"></div><div id="own" class="hide"></div>
@@ -75,7 +75,7 @@ function v(id){var e=$(id);return e?e.value.trim():""}
 function out(h){$("res").innerHTML=h}
 function err(r){out('<div class="err">'+r.error+'</div>')}
 function wa(mob,msg){return '<a href="https://wa.me/91'+mob+'?text='+encodeURIComponent(msg)+'" target="_blank"><button class="wa">WhatsApp par bhejo</button></a>'}
-var SIGN="\n— Mobile World, Chheharta, Amritsar | 9592717735";
+var SIGN="\n— Mobile World, Chheharta, Amritsar | 7347342219";
 var P={
 Check:function(){$("pane").innerHTML='<b>Customer check</b>'+inp("m","Mobile number","tel")+'<button onclick="doCheck()">Check</button><div id="res"></div>'},
 Add:function(){$("pane").innerHTML='<b>Points add karo</b>'+(CF.fest?'<div class="ok">Festival 2x ON</div>':'')+inp("m","Mobile number","tel")+inp("n","Naam (naye customer ke liye)")+inp("b","Bill amount ₹","number")+inp("pr","Product (jaise Vivo Y29, cover)")+
@@ -127,8 +127,8 @@ function doSetBd(){O({action:"setbirthday",mobile:v("m"),birthday:v("bd")},funct
 function doReport(){out("...");O({action:"report",month:v("mo")},function(r){if(!r.ok)return err(r);var bt=Object.keys(r.byType).map(function(k){return k+": "+r.byType[k]}).join(" · ");
  out('<p><b>'+r.month+'</b></p><p>Points diye: <b>'+r.pointsGiven+'</b> · Use hue: <b>'+r.pointsUsed+'</b><br>Points wale bills: '+r.bills+' ('+rs(r.sales)+')<br>Naye customer: '+r.newCustomers+' · Kul customer: '+r.totalCustomers+'<br>Sabke paas bache points: '+r.outstanding+' (₹'+r.outstanding+')</p><div class="muted">'+bt+'</div><p><b>Top 10 customers</b></p>'+
  (r.top.length?r.top.map(function(c,i){return '<div class="tx"><div>'+(i+1)+'. '+c.name+'</div><div>'+rs(c.spend)+'</div></div>'}).join(""):'<div class="muted">-</div>'))})}
-var BC=[],BC_SENT={},BC_DEF="Namaste {naam} ji! Mobile World ki taraf se tyohar ki shubhkamnayein. Aapke paas {points} points hain, shop aakar use karein. 9592717735";
-var BC_END="\nWhatsApp/Call: 9592717735\nMobile World, Chheharta",BC_T=0,BC_F="Sab",BC_PH="";
+var BC=[],BC_SENT={},BC_DEF="Namaste {naam} ji! Mobile World ki taraf se tyohar ki shubhkamnayein. Aapke paas {points} points hain, shop aakar use karein. 7347342219";
+var BC_END="\nWhatsApp/Call: 7347342219\nMobile World, Chheharta",BC_T=0,BC_F="Sab",BC_PH="";
 var BC_TPL=[["Normal",BC_DEF],
 ["Lohri","Lohri diyan lakh lakh vadhaiyan {naam} ji! 🔥🪁\nMobile World ki taraf se aapko aur aapke parivaar ko Lohri mubarak.\n\nAapke paas {points} points hain, shop aakar use karein.\nNaye phones aur accessories pe shop pe best rate."+BC_END],
 ["Holi","Happy Holi {naam} ji! 🌈🎨\nMobile World ki taraf se aapko rangon bhari Holi ki shubhkamnayein.\n\nAapke paas {points} points hain, shop aakar use karein.\nNaye phones aur accessories pe shop pe best rate."+BC_END],
@@ -165,8 +165,8 @@ function bcDraw(){var e=$("bm"),t=e?e.value:BC_DEF;bcCount();if(!BC.length)retur
  out(L.map(function(c){var m=escH(c.mobile);return '<div class="tx"><div><b>'+escH(c.fullName||c.name)+'</b>'+(c.family?' <span class="muted">· Family</span>':'')+'<div class="muted">'+m+' · '+c.balance+' pts'+bcLast(c)+'<span id="bs'+m+'">'+(BC_SENT[c.mobile]?' · <span class="ok">bheja ✔</span>':'')+'</span></div></div><a href="https://wa.me/91'+m+'?text='+encodeURIComponent(bcMsg(t,c))+'" target="_blank" rel="noopener" onclick="bcSent(\''+m+'\')" style="flex:0 0 auto"><button class="wa" style="width:auto;padding:9px 14px">WhatsApp</button></a></div>'}).join(""))}
 var LD_PRIZE=500,LD_GIFT="",LD_TXT="",LD_MON=["January","February","March","April","May","June","July","August","September","October","November","December"];
 function ldPrev(){var d=new Date();d.setDate(1);d.setMonth(d.getMonth()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")}
-function ldWinMsg(w){return "Badhai ho "+w.firstName+" ji! 🎉 Aap Mobile World Lucky Draw ("+w.label+") ke winner hain, Entry #"+w.entryNo+". "+(w.gift?"Aapka inaam: "+w.gift+" 🎁 Mobile World par aakar apna inaam le jaayein.":"Aapke account mein "+w.prize+" bonus points jod diye gaye hain. Mobile World par aaj hi aakar redeem karein.")+" WhatsApp/Call: 9592717735"}
-function ldCommMsg(w){return "🎉 Mobile World Lucky Draw – "+w.label+" ke Winner! 🎉\n\nBadhai ho "+w.firstName+" ji (mobile ••••"+w.last4+")!\nEntry #"+w.entryNo+" ne jeeta "+ldPz(w)+" 🎁\n"+w.firstName+" ji, "+(w.gift?"Mobile World par aakar apna inaam le jaayein.":"aap Mobile World par aaj hi jaakar apne points redeem kar sakte hain.")+"\n\nIs mahine kul "+w.total+" entries thi. Sabka dhanyavaad!\n\nAgla draw 1 tareekh ko. ₹5,000 se upar ki har kharidari pe ek free entry.\nJitni zyada kharidari, utne zyada chance! 🍀\n\nWhatsApp/Call: 9592717735\nMobile World, Chheharta"}
+function ldWinMsg(w){return "Badhai ho "+w.firstName+" ji! 🎉 Aap Mobile World Lucky Draw ("+w.label+") ke winner hain, Entry #"+w.entryNo+". "+(w.gift?"Aapka inaam: "+w.gift+" 🎁 Mobile World par aakar apna inaam le jaayein.":"Aapke account mein "+w.prize+" bonus points jod diye gaye hain. Mobile World par aaj hi aakar redeem karein.")+" WhatsApp/Call: 7347342219"}
+function ldCommMsg(w){return "🎉 Mobile World Lucky Draw – "+w.label+" ke Winner! 🎉\n\nBadhai ho "+w.firstName+" ji (mobile ••••"+w.last4+")!\nEntry #"+w.entryNo+" ne jeeta "+ldPz(w)+" 🎁\n"+w.firstName+" ji, "+(w.gift?"Mobile World par aakar apna inaam le jaayein.":"aap Mobile World par aaj hi jaakar apne points redeem kar sakte hain.")+"\n\nIs mahine kul "+w.total+" entries thi. Sabka dhanyavaad!\n\nAgla draw 1 tareekh ko. ₹5,000 se upar ki har kharidari pe ek free entry.\nJitni zyada kharidari, utne zyada chance! 🍀\n\nWhatsApp/Call: 7347342219\nMobile World, Chheharta"}
 function ldWinHtml(w){LD_TXT=ldCommMsg(w);var m=escH(w.mobile);return '<div class="card"><b>🏆 '+escH(w.label)+' ke Winner: '+escH(w.name)+'</b>'+(w.buyDate?'<div>🛍️ Liya tha: '+escH(w.buy||'(product nahi likha)')+' · '+escH(w.buyDate)+'</div>':'')+'<div class="muted">Entry #'+escH(w.entryNo)+' · '+m+' · '+(w.gift?'Inaam: '+escH(w.gift)+' (shop se dena hai)':escH(w.prize)+' points diye')+' · Kul '+escH(w.total)+' entries'+(w.date?' · '+escH(w.date):'')+'</div>'+
  '<a href="https://wa.me/91'+m+'?text='+encodeURIComponent(ldWinMsg(w))+'" target="_blank" rel="noopener"><button class="wa">Winner ko WhatsApp</button></a>'+
  '<a href="https://wa.me/?text='+encodeURIComponent(LD_TXT)+'" target="_blank" rel="noopener"><button class="wa">Community mein bhejo</button></a>'+
