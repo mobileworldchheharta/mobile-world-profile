@@ -36,15 +36,7 @@ button.sec{background:#2a2348}button.wa{background:#25d366}
  <div class="contact"><a href="tel:+919592717735">📞 Call</a> · <a href="https://wa.me/919592717735" target="_blank" rel="noopener">WhatsApp 9592717735</a></div>
 </div>
 
-<div id="lock" class="hide"><div class="card"><b id="lt">Owner PIN</b>
- <input id="pin" type="password" inputmode="numeric" maxlength="4" placeholder="4-digit PIN">
- <button onclick="doLogin()">Kholo</button><button class="sec" onclick="showPub()">Wapas</button><div id="lerr"></div></div></div>
-
-<div id="own" class="hide">
- <div class="tabs" id="tabs"></div>
- <div class="card" id="pane"></div>
- <button class="sec" onclick="logout()">Lock karo</button>
-</div>
+<div id="lock" class="hide"></div><div id="own" class="hide"></div>
 </div>
 <script>
 var CF={},PIN="",ROLE="",taps=0,tt,START=(new URLSearchParams(location.search).get('p')==='join')?'join':'';
@@ -53,7 +45,7 @@ function rs(n){return "₹"+Number(n).toLocaleString("en-IN")}
 var API="https://script.google.com/macros/s/AKfycbxgmvpmdP1H3ZiK81gsv5EgFuYKUyJiIqKAFKpcQuUI6xV5WWVoVIw1PSIe5exZhtcJ/exec";function run(fn,arg,cb){var u,o={credentials:"omit",redirect:"follow"};if(fn==="owner"){u=API;o.method="POST";o.headers={"Content-Type":"text/plain;charset=utf-8"};o.body=JSON.stringify(arg||{})}else if(fn==="config")u=API+"?api=config";else if(fn==="luckyPub")u=API+"?api=lucky";else if(fn==="publicCheck")u=API+"?mobile="+encodeURIComponent(arg);else{cb({ok:false,error:"unknown "+fn});return}fetch(u,o).then(function(x){return x.json()}).then(cb).catch(function(e){cb({ok:false,error:"Network problem, dobara try karein"})})}
 function O(req,cb){req.pin=PIN;run("owner",req,cb)}
 run("config",undefined,function(c){CF=c});run("luckyPub",undefined,ldOff);
-$("logo").onclick=function(){taps++;clearTimeout(tt);tt=setTimeout(function(){taps=0},2000);if(taps>=5){taps=0;openLock()}};
+
 function escH(t){return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function histHtml(h){if(!h.length)return '<div class="muted">Abhi koi entry nahi</div>';return h.map(function(x){
  return '<div class="tx"><div>'+x.type+(x.note?' · '+escH(x.note):'')+'<div class="muted">'+x.date+(x.bill?' · Bill '+rs(x.bill):'')+'</div></div><div class="'+(x.points>=0?'plus':'minus')+'">'+(x.points>=0?'+':'')+x.points+'</div></div>'}).join("")}
